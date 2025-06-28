@@ -129,16 +129,12 @@ namespace Ex05.GameUI.Forms
 
             GuessResult result = r_GameManager.SubmitGuess(guess);
 
-            for (int i = 0; i < result.Bulls; i++)
+            IReadOnlyList<eColor> secret = r_GameManager.SecretCode;
+            for (int i = 0; i < k_Columns; i++)
             {
-                // Yellow represents a correct color in the correct position
-                r_ResultButtons[rowIndex][i].BackColor = Color.Yellow;
-            }
-
-            for (int i = result.Bulls; i < result.Bulls + result.Pgia; i++)
-            {
-                // Black represents a correct color in a wrong position
-                r_ResultButtons[rowIndex][i].BackColor = Color.Black;
+                // Yellow represents a correct guess, black represents an incorrect one
+                r_ResultButtons[rowIndex][i].BackColor =
+                    guess[i] == secret[i] ? Color.Yellow : Color.Black;
             }
 
             foreach (Button b in r_GuessButtons[rowIndex])
