@@ -131,12 +131,14 @@ namespace Ex05.GameUI.Forms
 
             for (int i = 0; i < result.Bulls; i++)
             {
-                r_ResultButtons[rowIndex][i].BackColor = Color.Black;
+                // Yellow represents a correct color in the correct position
+                r_ResultButtons[rowIndex][i].BackColor = Color.Yellow;
             }
 
             for (int i = result.Bulls; i < result.Bulls + result.Pgia; i++)
             {
-                r_ResultButtons[rowIndex][i].BackColor = Color.Yellow;
+                // Black represents a correct color in a wrong position
+                r_ResultButtons[rowIndex][i].BackColor = Color.Black;
             }
 
             foreach (Button b in r_GuessButtons[rowIndex])
