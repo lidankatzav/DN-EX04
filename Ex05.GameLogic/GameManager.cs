@@ -42,35 +42,39 @@ namespace Ex05.GameLogic
             }
 
             int bulls = 0;
-            int pgia = 0;
-
-            bool[] secretUsed = new bool[r_Columns];
-            bool[] guessUsed = new bool[r_Columns];
+            var secretCounts = new Dictionary<eColor, int>();
+            var guessCounts = new Dictionary<eColor, int>();
 
             for (int i = 0; i < r_Columns; i++)
             {
                 if (guess[i] == r_SecretCode[i])
                 {
                     bulls++;
-                    secretUsed[i] = true;
-                    guessUsed[i] = true;
                 }
-            }
 
-            for (int i = 0; i < r_Columns; i++)
-            {
-                if (guessUsed[i]) continue;
-
-                for (int j = 0; j < r_Columns; j++)
+                if (!secretCounts.ContainsKey(r_SecretCode[i]))
                 {
-                    if (!secretUsed[j] && guess[i] == r_SecretCode[j])
-                    {
-                        pgia++;
-                        secretUsed[j] = true;
-                        break;
-                    }
+                    secretCounts[r_SecretCode[i]] = 0;
+                }
+                secretCounts[r_SecretCode[i]]++;
+
+                if (!guessCounts.ContainsKey(guess[i]))
+                {
+                    guessCounts[guess[i]] = 0;
+                }
+                guessCounts[guess[i]]++;
+            }
+
+            int totalMatches = 0;
+            foreach (var color in guessCounts.Keys)
+            {
+                if (secretCounts.TryGetValue(color, out int secretCount))
+                {
+                    totalMatches += Math.Min(secretCount, guessCounts[color]);
                 }
             }
+
+            int pgia = totalMatches - bulls;
 
             GuessResult result = new GuessResult(bulls, pgia);
             Guesses.Add(guess);
